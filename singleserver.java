@@ -53,10 +53,10 @@ public class Server {
 }//End Sever
 public class ServerThread extends Thread {
 
-    //Variables 
+    //Variables
     Socket s = null;
 
-    //Constructor 
+    //Constructor
     public ServerThread(Socket clientSocket) {
         this.s = clientSocket;
     }//End constructor
@@ -70,13 +70,13 @@ public class ServerThread extends Thread {
             BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
 
             while (true) {
-                //Variables 
+                //Variables
                 String option = in.readLine();
                 String send = "str";
                 Process cmdProc;
                 cmdProc = null;
 
-                //Checks for unrecognized options   
+                //Checks for unrecognized options
                 if (option.equalsIgnoreCase("/*!@#$%^&*()\"{}_[]|\\?/<>,.")) {
                     System.err.println("Unrecognized option...please try again");
                     return;
@@ -84,43 +84,43 @@ public class ServerThread extends Thread {
 
                 //Execute the appropriate option
                 switch (option) {
-                    //Current Date & Time 
+                    //Current Date & Time
                     case "1":
                         System.out.println("Responding to current time & date request from the client...");
                         String[] cmd = {"bash", "-c", "date +%D%t%T%Z"};
                         cmdProc = Runtime.getRuntime().exec(cmd);
                         break;
-                    //Uptime 
+                    //Uptime
                     case "2":
                         System.out.println("Responding to uptime request from the client...");
                         String[] cmdA = {"bash", "-c", "uptime -p"};
                         cmdProc = Runtime.getRuntime().exec(cmdA);
                         break;
-                    //Memory Use 
+                    //Memory Use
                     case "3":
                         System.out.println("Responding to memory use request from the client...");
                         String[] cmdB = {"bash", "-c", "free -m"};
                         cmdProc = Runtime.getRuntime().exec(cmdB);
                         break;
-                    //Netstat 
+                    //Netstat
                     case "4":
                         System.out.println("Responding to netstat request from the client...");
                         String[] cmdC = {"bash", "-c", "netstat -r"};
                         cmdProc = Runtime.getRuntime().exec(cmdC);
                         break;
-                    //Current Users 
+                    //Current Users
                     case "5":
                         System.out.println("Responding to current users request from the client...");
                         String[] cmdD = {"bash", "-c", "users"};
                         cmdProc = Runtime.getRuntime().exec(cmdD);
                         break;
-                    //Running Processes 
+                    //Running Processes
                     case "6":
                         System.out.println("Responding to running processes request from the client...");
                         String[] cmdE = {"bash", "-c", "ps"};
                         cmdProc = Runtime.getRuntime().exec(cmdE);
                         break;
-                    //Quit 
+                    //Quit
                     case "7":
                         System.out.println("Quitting...");
                         String[] cmdF = {"bash", "-c", "exit"};
@@ -131,8 +131,8 @@ public class ServerThread extends Thread {
                     default:
                         System.out.println("Unknown request...");
                         return;
-                }//End switch 
-                //Print option 
+                }//End switch
+                //Print option
                 BufferedReader cmdin = new BufferedReader(new InputStreamReader(cmdProc.getInputStream()));
                 String cmdans;
                 while ((cmdans = cmdin.readLine()) != null) {
@@ -141,7 +141,7 @@ public class ServerThread extends Thread {
                 out.println("Server done...");
             }//End while
         }//End try
-        //Catches 
+        //Catches
         catch (IOException e) {
             System.out.println("Exception caught " + e);
             System.out.println(e.getMessage());
