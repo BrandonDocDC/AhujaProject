@@ -1,5 +1,3 @@
-package multiclient;
-run
 //Imports
 import java.io.BufferedReader;
 import java.util.InputMismatchException;
@@ -11,12 +9,13 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 /*
-  Project 1 - Networks and Distributed Systems
+  Project 1 & 2 clients - Networks and Distributed Systems
   Dr. Ahuja
   Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
 */
 
-public class MultiClient {
+//javac client.java; java client ip port numberClients
+public class Client {
 	// vars
     public static String userInput;
     public static int times, option;
