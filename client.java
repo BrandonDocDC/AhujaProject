@@ -11,7 +11,7 @@ import java.util.concurrent.*;
 /* Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
 */
 
-// "java Client <IP> <NUMBER_OF_CLIENTS>"
+// "java Client <IP> <NUMBER_OF_CLIENTS> <COMMAND>"
 // port is hardcoxded as 8080 on both the client and server to prevent error
 public class Client
 {
@@ -23,11 +23,11 @@ public class Client
 		if (args.length == 2) {
 			ip.setIP(args[0]);
 			numJobs = Integer.parseInt(args[1]);
-			command = "A";
+			command = args[2];
 		}else {
-			ip.setIP("139.62.210.188");
+			ip.setIP("192.168.100.118");
 			numJobs = 50;
-			command = "A";
+			command = A;
 		}
  		command = command.toUpperCase();
  		// Set up the Queue for printing. Add header for csv formatting
