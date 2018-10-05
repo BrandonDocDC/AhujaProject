@@ -1,35 +1,27 @@
 // import libraries
-
 import java.io.*;
 import java.net.*;
 import java.lang.*;
 import java.util.*;
 import java.util.concurrent.*;
 
-/* Project 1 - Networks and Distributed Systems
+/* Project 1 Test for user to make graphs - Networks and Distributed Systems
 /* Dr. Ahuja
 /* Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
 */
 
-// "java Client <IP> <NUMBER_OF_CLIENTS> <COMMAND>"
+// "javac TestClient.java" "java TestClient <IP> <PORT> <NUMBER_OF_CLIENTS> <COMMAND>"
 // port is hardcoxded as 8080 on both the client and server to prevent error
-public class Client
+public class TestClient
 {
 	public static void main(String[] args) {
 		IPInfo ip = new IPInfo();
-		String command;
-		ip.setPort(8080);
-		int numJobs = 10;
-		if (args.length == 2) {
-			ip.setIP(args[0]);
-			numJobs = Integer.parseInt(args[1]);
-			command = args[2];
-		}else {
-			ip.setIP("192.168.100.118");
-			numJobs = 50;
-			command = A;
-		}
- 		command = command.toUpperCase();
+		ip.setIP(args[0]); // set IP
+		ip.setPort(Integer.parseInt(args[1])); // set port
+		int numJobs = Integer.parseInt(args[2]); // set #of clients
+		String command = String.valueOf(args[3]); // set command to send to server
+ 		command = command.toUpperCase(); // make sure it is exactly the same for the case-switch on server.
+		
  		// Set up the Queue for printing. Add header for csv formatting
 		ConcurrentLinkedQueue<String> printQueue = new ConcurrentLinkedQueue<String>();
  		Thread printThread = new Thread(new Printer(printQueue, command));
@@ -38,14 +30,17 @@ public class Client
 		System.out.println("Client connected to Server (" + ip.getIP() + ") on Port: " + ip.getPort());
 		System.out.println("Transmitting " + numJobs + " client requests...");
 		Thread[] threads = new Thread[numJobs];
+		// thread for each command
  		for (int i = 0; i < numJobs; i++) {
 			Thread newThread = new Thread(new ThreadProcess(printQueue, command));
 			newThread.setName("Thread" + i);
 			threads[i] = newThread;
  		}
+		// spawn clients (threads)
  		for (int i = 0; i < numJobs; i++) {
 			threads[i].start();
 		}
+		// connect each thread to the server
  		for(int i = 0; i < numJobs; i++){
 			try{
 				threads[i].join();
@@ -60,7 +55,7 @@ public class Client
  	}
 } // end main
 
-// ThreadProcess makes many threads of the same client to test turn-around time from server.
+// bits and pieces to ensure there are multiple client threads, each is connected to the server, and each command is sent threaded. all responses come back as a time, all times are averaged at the end.
 class ThreadProcess implements Runnable
 {
 	ConcurrentLinkedQueue<String> queue;
