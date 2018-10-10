@@ -1,5 +1,3 @@
-package multiclient;
-
 //Imports
 import java.io.BufferedReader;
 import java.util.InputMismatchException;
@@ -22,8 +20,6 @@ public class MultiClient extends Thread {
     String serverResponse; 
     public static String userInput;
     public static int option;
-    public static String userInput;
-    public static int times, option;
 
     //Constructor
     public MultiClient(Socket clientSocket) {
@@ -136,7 +132,7 @@ public class MultiClient extends Thread {
             System.out.println(e.getMessage());
         }//End catch
     }//End run
-	
+
     public static void main(String[] args) throws IOException, InterruptedException {
         //Variables 
         String hostName = args[0];
