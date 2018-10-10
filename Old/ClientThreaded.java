@@ -13,16 +13,16 @@ public class ClientThreaded {
 	public static void main(String[] args) {
 		IPInfo ip = new IPInfo();
 		String command;
-		ip.setPort(8010);
+		ip.setPort(8012);
 		int numJobs;
 		if (args.length == 2) {
 			ip.setIP(args[0]);
 			numJobs = Integer.parseInt(args[1]);
-			command = "3";
+			command = "5";
 		}else {
 			ip.setIP("192.168.100.107");
 			numJobs = 5;
-			command = "3";
+			command = "5";
 		}
 		/** while (command != null) {
 			//Display menu to client 
@@ -51,7 +51,8 @@ public class ClientThreaded {
 			System.out.println("Client connected to Server (" + ip.getIP() + ") on Port: " + ip.getPort());
 			System.out.println("Transmitting " + numJobs + " client requests...");
 			Thread[] threads = new Thread[numJobs];
-
+			
+			//create array for threads
 			for (int i = 0; i < numJobs; i++) {
 				Thread newThread = new Thread(new ThreadProcess(printQueue, command));
 				newThread.setName("Thread" + i);
@@ -59,10 +60,12 @@ public class ClientThreaded {
 
 			}
 
+			//create new threads (initiate)
 			for (int i = 0; i < numJobs; i++) {
 				threads[i].start();
 			}
 
+			//run the threads (connect)
 			for(int i = 0; i < numJobs; i++){
 				try {
 					threads[i].join();
@@ -71,6 +74,7 @@ public class ClientThreaded {
 
 				}
 			}
+			
 			//join the print thread
 			try {
 				printThread.join();
@@ -102,9 +106,10 @@ class ThreadProcess implements Runnable
 	}
 	public void Connect()
 	{
-
+		System.out.println("Start ThreadProcess class");
 		try
 		{
+			System.out.println("Start Try request time");
 			IPInfo ip = new IPInfo();
 			InputStreamReader stdInReader = new InputStreamReader(System.in);
 			BufferedReader stdIn = new BufferedReader(stdInReader);
@@ -211,6 +216,7 @@ class Printer implements Runnable {
 	String command;
 	int numJobs;
 	int i;
+	int x;
 	
 	Printer(ConcurrentLinkedQueue<String> queue, String command,int numJobs)
 	{
@@ -218,6 +224,7 @@ class Printer implements Runnable {
 		this.command = command;
 		this.numJobs = numJobs;
 		i = 0;
+		x = 0;
 	}
 
 	public void run()
@@ -226,10 +233,11 @@ class Printer implements Runnable {
 		long startTime = System.currentTimeMillis();
 		long currentTime=startTime;
 		long startTotalTime = System.currentTimeMillis();
-		while(currentTime - startTime < 1000){
+		while(x < numJobs){
 			try{
 				Thread.sleep(25);
 				filename = "TestData"+command+".csv";
+				System.out.println("Created file: TestData"+command+".csv");
 				FileWriter fw = new FileWriter(filename, true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter out = new PrintWriter(bw);
@@ -246,6 +254,7 @@ class Printer implements Runnable {
 				{
 					System.out.println("Error saving to testdata");
 				}
+			x++;
 		}
 		long endtime = System.currentTimeMillis();
 		long totalTimeEnd = endtime - startTotalTime;
