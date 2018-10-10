@@ -13,7 +13,7 @@ public class ClientThreaded {
 	public static void main(String[] args) {
 		IPInfo ip = new IPInfo();
 		String command;
-		ip.setPort(8008);
+		ip.setPort(8010);
 		int numJobs;
 		if (args.length == 2) {
 			ip.setIP(args[0]);
