@@ -17,7 +17,7 @@ public class ClientThreaded
 		if (args.length == 2) {
 			ip.setIP(args[0]);
 			numJobs = Integer.parseInt(args[1]);
-			command = "A";
+			command = "1";
 		}else {
 			ip.setIP("192.168.100.107");
 			numJobs = 50;
