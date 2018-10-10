@@ -174,10 +174,13 @@ public class MultiClient extends Thread {
                 for (int i = 0; i < numberClients; i++){
                     clientThread[i].start(); 
                 }
-                //Join threads
-                for (int i = 0; i < numberClients; i++){
-                    clientThread[i].join(); 
-                }
+				//cannot join thread of 1
+				if (numberClients > 1) {
+					//Join threads
+					for (int i = 0; i < numberClients; i++){
+						clientThread[i].join(); 
+					}
+				}
             }//End while loop
         }//End try
         
