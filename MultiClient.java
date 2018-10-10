@@ -37,9 +37,10 @@ public class MultiClient extends Thread {
                 BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
                 Scanner s = new Scanner(System.in);
-                 //Start time 
-                long start_time = System.currentTimeMillis();
-
+				long start_time; //initialize var
+				long responseTime;
+				long end_time;
+				
                 //Display menu to client 
                 System.out.println(
                         "1) Host Current Date and Time\n"
@@ -54,7 +55,7 @@ public class MultiClient extends Thread {
                 //Ask client for selection 
                 System.out.println("Select your option: ");
                 option = stdIn.read();
-                
+				
                 //Switch for options 
                 switch (option) {
                     //Host Current Date & Time
@@ -104,25 +105,33 @@ public class MultiClient extends Thread {
                     case '7':
                         out.println("7");
                         System.out.println("Quiting..." + in.readLine());
+						//close socket & kill process
+						s.close();
+						in.close();
+						out.close();
+						System.exit(1);
                         return;
                     //Invalid Input 
                     default:
                         System.err.println("ERROR! Invalid input... Please type a number between 1 and 7.");
                         continue;
                 }//End switch 
-
+				
+				// Start Time
+				start_time = System.currentTimeMillis();
+				
                 while ((userInput = in.readLine()) != null && !userInput.equalsIgnoreCase("Bye.")) {
-                    out.println(userInput);
+					out.println(userInput);
                 }
-                
+
                 //End timer 
-                long end_time = System.currentTimeMillis();
-                
+                end_time = System.currentTimeMillis();
+
                 //Success message 
                 System.out.println("Request is complete...\n"); 
-                
+
                 //Print reponse time 
-                long responseTime = end_time - start_time; 
+                responseTime = end_time - start_time; 
                 System.out.println("Response time: " + responseTime + "ms\n");
             }//End while
         }//End try  
@@ -138,10 +147,11 @@ public class MultiClient extends Thread {
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
         int numClients = Integer.parseInt(args[2]);
+		int numberClients = numClients - 1;
         MultiClient[] clientThread = new MultiClient[numClients]; 
 
         //ERROR: If hostName, portNumber, or numClients is wrong 
-        if (args.length != 2) {
+        if (args.length != 3) {
             System.err.println("Usage: java Client <host name> <port number> <number of clients>");
             System.exit(1);
         }
@@ -157,15 +167,15 @@ public class MultiClient extends Thread {
             while (true) {
                 new MultiClient(clientSocket).start(); 
                 //Create threads 
-                for(int i = 0; i <numClients; i++){
+                for (int i = 0; i < numberClients; i++){
                     clientThread[i] = new MultiClient(clientSocket);                
                 }
                 //Start threads 
-                for(int i = 0; i < numClients; i++){
+                for (int i = 0; i < numberClients; i++){
                     clientThread[i].start(); 
                 }
                 //Join threads
-                for (int i = 0; i < numClients; i++){
+                for (int i = 0; i < numberClients; i++){
                     clientThread[i].join(); 
                 }
             }//End while loop
