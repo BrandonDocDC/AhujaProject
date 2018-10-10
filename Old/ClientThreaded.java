@@ -7,62 +7,83 @@ import java.util.concurrent.*;
 // "java ClientThreaded <IP> <NUMBER_OF_CLIENTS>"
 // port is automatically 8080 on client and server prevent error
 
-public class ClientThreaded
-{
+
+public class ClientThreaded {
+	
 	public static void main(String[] args) {
 		IPInfo ip = new IPInfo();
 		String command;
-		ip.setPort(8080);
-		int numJobs = 10;
+		ip.setPort(8008);
+		int numJobs;
 		if (args.length == 2) {
 			ip.setIP(args[0]);
 			numJobs = Integer.parseInt(args[1]);
-			command = "1";
+			command = "3";
 		}else {
 			ip.setIP("192.168.100.107");
-			numJobs = 50;
-			command = "1";
+			numJobs = 5;
+			command = "3";
 		}
+		/** while (command != null) {
+			//Display menu to client 
+			System.out.println(
+				"1) Host Current Date and Time\n"
+				+ "2) Host Uptime\n"
+				+ "3) Host Memory Use\n"
+				+ "4) Host Netstat\n"
+				+ "5) Host Current Users\n"
+				+ "6) Host Running Processes\n"
+				+ "7) Quit\n"
+			);
+			
+			//ask user for command
+			System.out.println("\nSelect your option: ");
+			Scanner scan = new Scanner(System.in);
+			command = scan.nextLine();
+		*/	
+			//Set up the Queue for printing. Add header for csv formatting
+			ConcurrentLinkedQueue<String> printQueue = new ConcurrentLinkedQueue<String>();
 
-		command = command.toUpperCase();
+			Thread printThread = new Thread(new Printer(printQueue, command, numJobs));
+			printThread.start();
 
-		//Set up the Queue for printing. Add header for csv formatting
-		ConcurrentLinkedQueue<String> printQueue = new ConcurrentLinkedQueue<String>();
+			//start primary threads
+			System.out.println("Client connected to Server (" + ip.getIP() + ") on Port: " + ip.getPort());
+			System.out.println("Transmitting " + numJobs + " client requests...");
+			Thread[] threads = new Thread[numJobs];
 
-		Thread printThread = new Thread(new Printer(printQueue, command));
-		printThread.start();
-
-		//start primary threads
-		System.out.println("Client connected to Server (" + ip.getIP() + ") on Port: " + ip.getPort());
-		System.out.println("Transmitting " + numJobs + " client requests...");
-		Thread[] threads = new Thread[numJobs];
-
-		for (int i = 0; i < numJobs; i++) {
-			Thread newThread = new Thread(new ThreadProcess(printQueue, command));
-			newThread.setName("Thread" + i);
-			threads[i] = newThread;
-
-		}
-
-		for (int i = 0; i < numJobs; i++) {
-			threads[i].start();
-		}
-
-		for(int i = 0; i < numJobs; i++){
-			try{
-				threads[i].join();
-			}catch(Exception e){
+			for (int i = 0; i < numJobs; i++) {
+				Thread newThread = new Thread(new ThreadProcess(printQueue, command));
+				newThread.setName("Thread" + i);
+				threads[i] = newThread;
 
 			}
-		}
-		//join the print thread
-		try {
-			printThread.join();
-		} catch (Exception e) {
-		}
 
-	}
-} // end main
+			for (int i = 0; i < numJobs; i++) {
+				threads[i].start();
+			}
+
+			for(int i = 0; i < numJobs; i++){
+				try {
+					threads[i].join();
+				}
+				catch(Exception e){
+
+				}
+			}
+			//join the print thread
+			try {
+				printThread.join();
+			}
+			catch (Exception e) {
+			}
+			//System.out.println("End of While");
+			//command = null;
+		//}//while ends
+		//System.out.println("Outside While");
+		
+	}// end main
+} 
 
 class ThreadProcess implements Runnable
 {
@@ -114,7 +135,8 @@ class ThreadProcess implements Runnable
 			delay1 = finishTime - startTime;
 
 			String passer = Thread.currentThread().getName() + " request processed in " + delay1 + " ms";
-
+			System.out.println("Per command request time");
+			
 			//System.out.println(passer);
 			queue.add(passer);
 			fromServer.close();
@@ -187,12 +209,14 @@ class Printer implements Runnable {
 	ConcurrentLinkedQueue<String> queue;
 	String filename;
 	String command;
+	int numJobs;
 	int i;
 	
-	Printer(ConcurrentLinkedQueue<String> queue, String command)
+	Printer(ConcurrentLinkedQueue<String> queue, String command,int numJobs)
 	{
 		this.queue = queue;
 		this.command = command;
+		this.numJobs = numJobs;
 		i = 0;
 	}
 
@@ -225,8 +249,10 @@ class Printer implements Runnable {
 		}
 		long endtime = System.currentTimeMillis();
 		long totalTimeEnd = endtime - startTotalTime;
-		long AvgTime = totalTimeEnd / i;
+		long AvgTime = totalTimeEnd / numJobs;
 		System.out.println("Total Turn-Around Time: " + totalTimeEnd + " ms");
 		System.out.println("Average Turn-Around Time: " + AvgTime + " ms");
+		System.out.println("Command is: " + command + "");
+		
 	} // end run
 }
