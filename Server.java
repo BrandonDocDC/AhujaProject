@@ -50,7 +50,7 @@ public class Server extends Thread {
 						cmdProc = Runtime.getRuntime().exec(cmdA);
 					break;
 					case "3":
-						System.out.println("Responding to number of active socket connections request from the client");
+						System.out.println("Responding to memory use request from the client");
 						String[] cmdB = {"bash", "-c", "free -m"};
 						cmdProc = Runtime.getRuntime().exec(cmdB);
 					break;
