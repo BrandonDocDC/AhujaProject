@@ -11,22 +11,23 @@ import java.util.*;
 public class Client {
 	//global vars
 	public static String serverResponse;
-    public static String userInput;
 	public static String stopVar = "Stop";
     public static int times, option;
 	public static long end_time;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException  {
 	//local vars
     String hostName = args[0];
     int portNumber = Integer.parseInt(args[1]);
 
 		//if the user executes the java without params (args)
-        if (args.length != 2){
-			System.err.println("You need the server and port: java Client <host name> <port number>");
-			System.err.println("  --                 Example: java Client 192.168.100.107 8012");
-            System.exit(1);
-        }//end if
+        //if (args.length != 2){
+		//	System.out.println("======================================================");
+		//	System.err.println("You need the server and port: java Client <host name> <port number>");
+		//	System.err.println("  --                 Example: java Client 192.168.100.107 8012");
+		//	System.out.println("======================================================");
+        //    System.exit(1);
+        //}//end if
 
 		//When successful, it will establish a socket
         try{         
@@ -40,6 +41,21 @@ public class Client {
 				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // in is the input from server response
 				BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); //user menu input
 				Scanner s = new Scanner(System.in); // s var to loop executions
+				
+				//check that actually connected to server
+				//Thread.sleep(1000);
+				//if ((serverResponse = in.readLine()) != null && !serverResponse.equalsIgnoreCase("Success")) {
+				//	System.out.println("======================================================");
+				//	System.err.println("Successfully connected to " + hostName + " over port " + portNumber);
+				//	System.out.println("======================================================");
+				//}
+				//else {
+				//	System.out.println("======================================================");
+				//	System.err.println("You need to enter the correct port number!");
+				//	System.err.println("  --                 Example: java Client <IP> <port>");
+				//	System.out.println("======================================================");
+				//	System.exit(1);
+				//}
 
 				//while the socket is live, it will keep posting the menu
 				//while2
@@ -154,8 +170,8 @@ public class Client {
 							continue;
 					}//End switch 
 					
-					while ((userInput = in.readLine()) != null && !userInput.equalsIgnoreCase("EndResponse")) {
-						out.println(userInput);
+					while ((serverResponse = in.readLine()) != null && !serverResponse.equalsIgnoreCase("EndResponse")) {
+						out.println(serverResponse);
 					}
 					//end the time per command
 					end_time = System.currentTimeMillis();
