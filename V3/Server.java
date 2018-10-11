@@ -1,12 +1,12 @@
+/** Project 1 - Networks and Distributed Systems
+  * Dr. Ahuja
+  * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
+  * Server.java
+*/
+
 // Imports
 import java.io.*;
 import java.net.*;
-
-/** Project 1 - Networks and Distributed Systems
- * Dr. Ahuja
- * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
- * Server.java
-*/
 
 public class Server extends Thread {
 	//Global Vars
@@ -29,7 +29,7 @@ public class Server extends Thread {
 			BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream())); //listen for input
 
 			//while it is open (listening for requests)
-			while(true){     
+			while(true){
 				//local vars
 				String option = in.readLine();
 				String send = "str";
@@ -39,37 +39,44 @@ public class Server extends Thread {
 
 				//exectute commend in linux format
 				switch (option){
-					case "1": 
+					case "1":
+						//Host current Date and Time
 						System.out.println("Responding to date request from the client");
 						String[] cmd = {"bash", "-c", "date +%D%t%T%Z"};
 						cmdProc = Runtime.getRuntime().exec(cmd);
 					break;
 					case "2":
+						//Host uptime
 						System.out.println("Responding to uptime request from the client");
 						String[] cmdA = {"bash", "-c", "uptime -p"};
 						cmdProc = Runtime.getRuntime().exec(cmdA);
 					break;
 					case "3":
+						//Host memory use
 						System.out.println("Responding to memory use request from the client");
 						String[] cmdB = {"bash", "-c", "free -m"};
 						cmdProc = Runtime.getRuntime().exec(cmdB);
 					break;
 					case "4":
+						//Host Netstat
 						System.out.println("Responding to netstat request from the client");
 						String[] cmdC = {"bash", "-c", "netstat"};
 						cmdProc = Runtime.getRuntime().exec(cmdC);
 					break;
 					case "5":
+						//Host current users
 						System.out.println("Responding to current users request from the client");
 						String[] cmdD = {"bash", "-c", "users"};
 						cmdProc = Runtime.getRuntime().exec(cmdD);
 					break;
 					case "6":
+						//Host running processes
 						System.out.println("Responding to current processes request from the client");
 						String[] cmdE = {"bash", "-c", "ps"};
 						cmdProc = Runtime.getRuntime().exec(cmdE);
 					break;
 					case "7":
+						//Quit
 						System.out.println("Quitting...");
 						String[] cmdF = {"bash", "-c", "exit"};
 						cmdProc = Runtime.getRuntime().exec(cmdF);
@@ -78,7 +85,7 @@ public class Server extends Thread {
 						out.close();
 					break;
 					default:
-						System.out.println("Unknown request ");
+						System.out.println("Error from host: Request not value 1-7.");
 					return;
 				}//end switch
 
