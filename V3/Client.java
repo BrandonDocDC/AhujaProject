@@ -10,6 +10,7 @@ import java.util.*;
 
 public class Client {
 	//global vars
+	public static String serverResponse;
     public static String userInput;
 	public static String stopVar = "Stop";
     public static int times, option;
@@ -41,61 +42,9 @@ public class Client {
 
 				//while the socket is live, it will keep posting the menu
 				//while2
-				while (true) {
+				//while (option != 7) {
 					long start_time; 
 					 //log print line, broken up to show output (menu)
-
-					// Switch Menu
-					switch (option) {
-						case '1':
-							//start_time = System.currentTimeMillis();
-							//System.out.println("Requesting Time");
-							out.println("1");
-							System.out.println("");
-							System.out.println("The Date and Time: " + in.readLine());
-							break;
-						case '2':
-							out.println("2");
-							System.out.println("");
-							System.out.println("System has been " + in.readLine());
-							break;
-						case '3':
-							out.println("3");
-							System.out.println("");
-							while (in.readLine() != null) {
-								System.out.println(in.readLine());
-							}
-							break;
-						case '4':
-							out.println("4");
-							System.out.println("");
-							while (in.readLine() != null) {
-								System.out.println(in.readLine());
-							}
-							break;
-						case '5':
-							out.println("5");
-							System.out.println("");
-							System.out.println("Current Users: " + in.readLine());
-							break;
-						case '6':
-							out.println("6");
-							System.out.println("");
-							while (in.readLine() != null) {
-								System.out.println(in.readLine());
-							}
-							break;
-						case '7':
-							out.println("7");
-							System.out.println("");
-							System.out.println(in.readLine());
-							return;
-						default:
-							System.err.println("  --  Unrecognized option.");
-							System.err.println("  --  Enter a number 1-7");
-							continue;
-					} //end switch
-					System.out.println("\n  --  Request is done");
 					System.out.println( "1) Host Current Date and Time\n"
 									  + "2) Host Current Uptime\n"
 									  + "3) Host Current Memory Use\n"
@@ -106,16 +55,85 @@ public class Client {
 									  
 					System.out.println("Select your option: ");
 					option = stdIn.read();
-					while ((userInput = in.readLine()) != null && !userInput.equalsIgnoreCase("Finished")) {
-						out.println(userInput);
 					
-					}//end while
-					//long end_time = System.currentTimeMillis();
-				System.out.println("end while2");
-				}//end while2
+					switch (option) {
+						//Host Current Date & Time
+						case '1':
+							out.println("1");
+							System.out.println("Current Date & Time: " + in.readLine());
+							break;
+						//Host Uptime
+						case '2':
+							out.println("2");
+							System.out.println("Uptime: " + in.readLine());
+							break;
+						//Host Memory Use
+						case '3':
+							out.println("3");
+							System.out.println("Memory Use: " + in.readLine());
+							while ((serverResponse = in.readLine()) != null && !serverResponse.equals("EndResponse")) {
+								System.out.println(serverResponse);
+							}
+							System.out.println("======================================================");
+							System.out.println("");
+							continue;
+						//Host Netstat
+						case '4':
+							out.println("4");
+							System.out.println("Netstat: " + in.readLine());
+							while ((serverResponse = in.readLine()) != null && !serverResponse.equals("EndResponse")) {
+								System.out.println(serverResponse);
+							}
+							System.out.println("======================================================");
+							System.out.println("");
+							serverResponse = null;
+							continue;
+						//Host Current Users 
+						case '5':
+							out.println("5");
+						//	String users = in.readLine();
+							System.out.println("Current Users: " + in.readLine());
+							break;
+						//Host Running Processes 
+						case '6':
+							out.println("6");
+							System.out.println("Running Processes: " + in.readLine());
+							while ((serverResponse = in.readLine()) != null && !serverResponse.equals("EndResponse")) {
+								System.out.println(serverResponse);
+							}
+							System.out.println("======================================================");
+							System.out.println("");
+							serverResponse = null;
+							continue;
+						//Quit 
+						case '7':
+							out.println("7");
+							System.out.println("Quiting...");
+							//close socket & kill process
+							s.close();
+							in.close();
+							out.close();
+							System.exit(1);
+							return;
+						//Invalid Input 
+						default:
+							System.err.println("ERROR! Invalid input... Please type a number between 1 and 7.");
+							continue;
+					}//End switch 
+					
+					// Start Time
+					start_time = System.currentTimeMillis();
+					
+					while ((userInput = in.readLine()) != null && !userInput.equalsIgnoreCase("EndResponse")) {
+						out.println(userInput);
+					}
+					long end_time = System.currentTimeMillis();
+				System.out.println("======================================================");
+				System.out.println("");
+				//}//end while2
 				//Print length of time and status of option
 				//System.out.println("  --  Completed in " + (end_time-start_time) + "ms");
-			System.out.println("end while1");
+			//System.out.println("end while1");
 			}// end while1
 		}//end try
 
