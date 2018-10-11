@@ -44,16 +44,6 @@ public class Client {
 				while (true) {
 					long start_time; 
 					 //log print line, broken up to show output (menu)
-					System.out.println( "1) Host Current Date and Time\n"
-									  + "2) Host Current Uptime\n"
-									  + "3) Host Current Memory Use\n"
-									  + "4) Host Current Netstat\n"
-									  + "5) Host Current Users\n"
-									  + "6) Host Running Processes\n"
-									  + "7) Quit\n" );
-									  
-					System.out.println("Select your option: ");
-					option = stdIn.read();
 
 					// Switch Menu
 					switch (option) {
@@ -102,18 +92,30 @@ public class Client {
 							return;
 						default:
 							System.err.println("  --  Unrecognized option.");
+							System.err.println("  --  Enter a number 1-7");
 							continue;
 					} //end switch
 					System.out.println("\n  --  Request is done");
-
+					System.out.println( "1) Host Current Date and Time\n"
+									  + "2) Host Current Uptime\n"
+									  + "3) Host Current Memory Use\n"
+									  + "4) Host Current Netstat\n"
+									  + "5) Host Current Users\n"
+									  + "6) Host Running Processes\n"
+									  + "7) Quit\n" );
+									  
+					System.out.println("Select your option: ");
+					option = stdIn.read();
 					while ((userInput = in.readLine()) != null && !userInput.equalsIgnoreCase("Finished")) {
 						out.println(userInput);
+					
 					}//end while
 					//long end_time = System.currentTimeMillis();
-
+				System.out.println("end while2");
 				}//end while2
 				//Print length of time and status of option
 				//System.out.println("  --  Completed in " + (end_time-start_time) + "ms");
+			System.out.println("end while1");
 			}// end while1
 		}//end try
 
