@@ -1,12 +1,12 @@
-/** Project 1 - Networks and Distributed Systems
-  * Dr. Ahuja
-  * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
-  * Server.java
-*/
-
-// Imports
+//Imports
 import java.io.*;
 import java.net.*;
+
+/** Project 1 - Networks and Distributed Systems
+ * Dr. Ahuja
+ * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
+ * Server.java
+*/
 
 public class Server extends Thread {
 	//Global Vars
@@ -20,16 +20,20 @@ public class Server extends Thread {
 	//run method
     @Override
     public void run() {
+		System.out.println("======================================================");
 		//Announce new client connection
-		System.out.println("  --  Client connected...");
+		System.out.println("Client connected...");
+		System.out.println("======================================================");
 
 		//Listen
 		try {
 			PrintWriter out = new PrintWriter(s.getOutputStream(),true); //keep the output open
+			out.println("Success");
 			BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream())); //listen for input
+			//send success to client that connected
 
 			//while it is open (listening for requests)
-			while(true){
+			while(true){     
 				//local vars
 				String option = in.readLine();
 				String send = "str";
@@ -39,45 +43,46 @@ public class Server extends Thread {
 
 				//exectute commend in linux format
 				switch (option){
-					case "1":
-						//Host current Date and Time
+					case "1": 
+						System.out.println("======================================================");
 						System.out.println("Responding to date request from the client");
 						String[] cmd = {"bash", "-c", "date +%D%t%T%Z"};
 						cmdProc = Runtime.getRuntime().exec(cmd);
 					break;
 					case "2":
-						//Host uptime
+						System.out.println("======================================================");
 						System.out.println("Responding to uptime request from the client");
 						String[] cmdA = {"bash", "-c", "uptime -p"};
 						cmdProc = Runtime.getRuntime().exec(cmdA);
 					break;
 					case "3":
-						//Host memory use
-						System.out.println("Responding to memory use request from the client");
+						System.out.println("======================================================");
+						System.out.println("Responding to number of active socket connections request from the client");
 						String[] cmdB = {"bash", "-c", "free -m"};
 						cmdProc = Runtime.getRuntime().exec(cmdB);
 					break;
 					case "4":
-						//Host Netstat
+						System.out.println("======================================================");
 						System.out.println("Responding to netstat request from the client");
-						String[] cmdC = {"bash", "-c", "netstat"};
+						String[] cmdC = {"bash", "-c", "netstat "};
 						cmdProc = Runtime.getRuntime().exec(cmdC);
 					break;
 					case "5":
-						//Host current users
+						System.out.println("======================================================");
 						System.out.println("Responding to current users request from the client");
 						String[] cmdD = {"bash", "-c", "users"};
 						cmdProc = Runtime.getRuntime().exec(cmdD);
 					break;
 					case "6":
-						//Host running processes
+						System.out.println("======================================================");
 						System.out.println("Responding to current processes request from the client");
 						String[] cmdE = {"bash", "-c", "ps"};
 						cmdProc = Runtime.getRuntime().exec(cmdE);
 					break;
 					case "7":
-						//Quit
-						System.out.println("Quitting...");
+						System.out.println("======================================================");
+						System.out.println("Client Quitting...");
+						System.out.println("======================================================");
 						String[] cmdF = {"bash", "-c", "exit"};
 						cmdProc = Runtime.getRuntime().exec(cmdF);
 						s.close();
@@ -85,7 +90,8 @@ public class Server extends Thread {
 						out.close();
 					break;
 					default:
-						System.out.println("Error from host: Request not value 1-7.");
+						System.out.println("Received input other tha 1-7");
+						out.println("EndResponse");
 					return;
 				}//end switch
 
@@ -93,22 +99,28 @@ public class Server extends Thread {
 				BufferedReader cmdin = new BufferedReader(new InputStreamReader(cmdProc.getInputStream()));
 				while((cmdans = cmdin.readLine()) != null) {
 					out.println(cmdans);
-					if (cmdans.equalsIgnoreCase("Bye.")) {
-						out.println("Bye.");
+					System.out.println(cmdans);
+					if (cmdans.equalsIgnoreCase("EndResponse")) {
+						out.println("EndResponse");
 						break;
 					}//end if
+				System.out.println("======================================================");
 				}//end while
-				out.println("Bye.");
+				out.println("EndResponse");
 			}//end while
 		}//end try
 
 		//catch errors
 		catch (IOException e){
+			System.out.println("======================================================");
 			System.out.println("Exception caught " + e);
 			System.out.println(e.getMessage());
+			System.out.println("======================================================");
 		}// end catch
 		catch (NullPointerException e) {
+			System.out.println("======================================================");
 			System.out.println("  --  All clients disconnected. Closing Socket...");
+			System.out.println("======================================================");
 			System.exit(1);
 		}//end catch
 
@@ -122,16 +134,19 @@ public class Server extends Thread {
 		//opens the socket to listen for client.
         try {
 			ServerSocket serverSocket = new ServerSocket(portNumber);
+			System.out.println("======================================================");
 			System.out.println("\nServer started. Listening on Port " + portNumber);
 			System.out.println("\nWaiting for client request");
-
+			System.out.println("======================================================");
 			//Keep server open and accept multiple clients
 			while(true){      
 				new Server(serverSocket.accept()).start();
 			}//End while
         }//End try
         catch (IOException e){
-            System.out.println("\nException caught" + e);
+			System.out.println("======================================================");
+            System.out.println("\nException caught: " + e);
+			System.out.println("======================================================");
         }//End Catch
 
     }//End main
