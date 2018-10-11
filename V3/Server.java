@@ -1,12 +1,12 @@
+/** Project 1 - Networks and Distributed Systems
+  * Dr. Ahuja
+  * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
+  * Client.java
+*/
+
 //Imports
 import java.io.*;
 import java.net.*;
-
-/** Project 1 - Networks and Distributed Systems
- * Dr. Ahuja
- * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
- * Server.java
-*/
 
 public class Server extends Thread {
 	//Global Vars
