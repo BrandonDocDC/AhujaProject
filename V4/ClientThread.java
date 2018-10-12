@@ -101,8 +101,6 @@ public class ClientThread extends Thread {
 			totalTime += response;
 			System.out.println("======================================================");
 			System.out.println("Thread response time = " + (response) + "ms");
-			System.out.println("Total response time = " + (totalTime) + "ms");
-			System.out.println("Average response time = " + (totalTime / counter) + "ms");
 			System.out.println("======================================================");
 			clientSocket.close();
 			out.close();
