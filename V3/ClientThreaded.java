@@ -1,3 +1,5 @@
+package multiclient;
+
 /** Project 1 - Networks and Distributed Systems
   * Dr. Ahuja
   * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
