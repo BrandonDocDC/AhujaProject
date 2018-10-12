@@ -91,11 +91,4 @@ public class MultiClient {
 			theThreads[index].run();
 		}// end runThreads method
 	}// end runThreads method
-
-	//ClientThreaded Method
-	public ClientThreaded(String host, int portNumber, int menuItem) {
-		hostName = host;
-		port = portNumber;
-		option = menuItem;
-	}// end ClientThreaded constructor
 }// end MultiClient class
