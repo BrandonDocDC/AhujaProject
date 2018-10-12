@@ -40,19 +40,19 @@ public class MultiClient {
 			numberOfTimes = keyboard.nextInt();
 		}
 		long timerStart = System.currentTimeMillis();
-		if (counter > 0) {
-			long timerStop = System.currentTimeMillis();
-			long totalTime = timerStop - timerStart;
-			System.out.println("======================================================");
-			System.out.println("Total time for all responses: " + totalTime + "ms");
-			System.out.println("======================================================");
-		}
 		counter++;
 		Thread[] theThreads = new Thread[numberOfTimes];
 		runThreads(numberOfTimes, theThreads);
 		//create an array of threads and join them
 		for(int index = 0; index < numberOfTimes; index++) 
 			theThreads[index].join();
+		}
+		if (counter > 0) {
+			long timerStop = System.currentTimeMillis();
+			long totalTime = timerStop - timerStart;
+			System.out.println("======================================================");
+			System.out.println("Total time for all responses: " + totalTime + "ms");
+			System.out.println("======================================================");
 		}
 	}// end main method 
 	
