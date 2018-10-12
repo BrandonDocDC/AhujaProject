@@ -22,9 +22,8 @@ import java.util.*;
 public class ClientThreaded extends Thread {
 	//Global Vars
 	public String hostName;
-	public int port;
-	public int option;
-	public ClientOptions(String host, int portNumber, int menuItem) {
+	public int port, option;
+	public ClientThreaded(String host, int portNumber, int menuItem) {
 		hostName = host;
 		port = portNumber;
 		option = menuItem;
@@ -45,7 +44,7 @@ public class ClientThreaded extends Thread {
 			clientSocket.setSoTimeout(timeOut);
 			// Output from server
 			BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			
+			//user input
 			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 			boolean validInput = false;
 			
@@ -115,4 +114,4 @@ public class ClientThreaded extends Thread {
 			System.exit(-1);
 		}
 	}// end run method
-}// end ClientOptions class
+}// end ClientThreaded class
