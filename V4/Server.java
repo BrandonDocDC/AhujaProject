@@ -1,160 +1,157 @@
 /** Project 1 - Networks and Distributed Systems
-  * Dr. Ahuja
-  * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
-  * Server.java
+ * Dr. Ahuja
+ * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
+ * Server.java
 */
 
-//server will open a socket and accept connections. Processes each connection/request
-//one at a time (iteratively).
-
 //Imports
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 
-//Server Class
-public class Server {
-	static DataInputStream inputFromClient;
-	static DataOutputStream outputToClient;
-  
-  //main method
-	public static void main(String[] args) throws IOException {
-		//Variables
-		ServerSocket server;
-		Socket clientConnection;
-		String option;
-		int portNum = Integer.parseInt(args[0]); // Preset port number
-		int timeout = 15000;
-		BufferedReader input;
-		;
-
-		try {
-			//create socket & keep it open
-			while (true) {
-				server = new ServerSocket(portNum);
-				
-				System.out.println("======================================================");
-				System.out.println("  Waiting for connection on Port " + portNum);
-				System.out.println("======================================================");
-				
-				clientConnection = server.accept();
-				clientConnection.setSoTimeout(timeout); // Timeout = 15 seconds
-				
-				System.out.println("======================================================");
-				System.out.println("  Connection received from " + clientConnection.getInetAddress() + " : "
-						+ clientConnection.getPort());
-				System.out.println("======================================================");
-				inputFromClient = new DataInputStream(clientConnection.getInputStream());
-				outputToClient = new DataOutputStream(clientConnection.getOutputStream());
-
-				input = new BufferedReader(new InputStreamReader(inputFromClient));
-				option = input.readLine();
-				//selection(option.trim());
-
-				// Close streams
-				outputToClient.close();
-				inputFromClient.close();
-				server.close();
-				clientConnection.close();
-        
-        //quits if option 7 is selected.
-				if(option.equals("7")){
-					System.exit(0);
-				}
-				server.close();
-			}
-		} catch (Exception e) {
-			System.out.println("======================================================");
-			System.out.println("Error: Cannot open socket.");
-			e.printStackTrace();
-			System.out.println("======================================================");
-			System.exit(-1);
-		}
-		
-	}
-	//respond to each client request
-	public static void selection(String option) {
-		Process process;
-		String output;
-		BufferedReader br;
-		try {
+public class Server extends Thread {
+	//Global Vars
+	Socket s = null;
     
-      //switch case for requests/commands/reponses
-			switch (option) {
-			case "1":
-				System.out.println("======================================================");
-				System.out.println("  Responding to date request from the client");
-				process = Runtime.getRuntime().exec("date +%D%t%T%Z");
-				br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-				while ((output = br.readLine()) != null)
-					outputToClient.writeChars(output);
-			break;
-			case "2":
-				System.out.println("======================================================");
-				System.out.println("  Responding to uptime request from the client");
-				process = Runtime.getRuntime().exec("uptime -p");
-				br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-				while ((output = br.readLine()) != null)
-					outputToClient.writeChars(output);
-			break;
-			case "3":
-				System.out.println("======================================================");
-				System.out.println("  Responding to number of active socket connections request from the client");
-				process = Runtime.getRuntime().exec("free -h");
-				br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+	//Thread Method
+    public Server(Socket clientSocket){
+        this.s = clientSocket;
+    } //end constructor
 
-				while ((output = br.readLine()) != null)
-					outputToClient.writeChars(output);
-			break;
-			case "4":
-				System.out.println("======================================================");
-				System.out.println("  Responding to netstat request from the client");
-				process = Runtime.getRuntime().exec("netstat");
-				br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+	//run method
+    @Override
+    public void run() {
+		System.out.println("======================================================");
+		//Announce new client connection
+		System.out.println("  Client connected...");
+		System.out.println("======================================================");
 
-				while ((output = br.readLine()) != null)
-					outputToClient.writeChars(output);
-			break;
-			case "5":
-				System.out.println("======================================================");
-				System.out.println("  Responding to current users request from the client");
-				process = Runtime.getRuntime().exec("who");
-				br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+		//Listen
+		try {
+			PrintWriter out = new PrintWriter(s.getOutputStream(),true); //keep the output open
+			//out.println("Success");
+			BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream())); //listen for input
+			//send success to client that connected
 
-				while ((output = br.readLine()) != null)
-					outputToClient.writeChars(output);
-			break;
-			case "6":
-				System.out.println("======================================================");
-				System.out.println("  Responding to current processes request from the client");
-				process = Runtime.getRuntime().exec("ps -e");
-				br = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			//while it is open (listening for requests)
+			while(true){     
+				//local vars
+				String option = in.readLine();
+				String send = "str";
+				Process cmdProc;
+				cmdProc = null;
+				String cmdans = null;
 
-				while ((output = br.readLine()) != null)
-					outputToClient.writeChars(output);
-			break;
-			case "7":
+				//exectute commend in linux format
+				switch (option){
+					case "1": 
+						System.out.println("======================================================");
+						System.out.println("  Responding to date request from the client");
+						String[] cmd = {"bash", "-c", "date +%D%t%T%Z"};
+						cmdProc = Runtime.getRuntime().exec(cmd);
+					break;
+					case "2":
+						System.out.println("======================================================");
+						System.out.println("  Responding to uptime request from the client");
+						String[] cmdA = {"bash", "-c", "uptime -p"}; // only returns the uptime, without other stuff
+						//String[] cmdA = {"bash", "-c", "uptime"};
+						cmdProc = Runtime.getRuntime().exec(cmdA);
+					break;
+					case "3":
+						System.out.println("======================================================");
+						System.out.println("  Responding to number of active socket connections request from the client");
+						String[] cmdB = {"bash", "-c", "free -h"}; // returns formatted bytes
+						//String[] cmdB = {"bash", "-c", "free"}; // returns in killabytes
+						cmdProc = Runtime.getRuntime().exec(cmdB);
+					break;
+					case "4":
+						System.out.println("  Responding to netstat request from the client");
+						String[] cmdC = {"bash", "-c", "netstat"};
+						cmdProc = Runtime.getRuntime().exec(cmdC);
+					break;
+					case "5":
+						System.out.println("======================================================");
+						System.out.println("  Responding to current users request from the client");
+						String[] cmdD = {"bash", "-c", "users"};
+						cmdProc = Runtime.getRuntime().exec(cmdD);
+					break;
+					case "6":
+						System.out.println("======================================================");
+						System.out.println("  Responding to current processes request from the client");
+						String[] cmdE = {"bash", "-c", "ps"};
+						cmdProc = Runtime.getRuntime().exec(cmdE);
+					break;
+					case "7":
+						System.out.println("======================================================");
+						System.out.println("  Client Quitting...");
+						System.out.println("======================================================");
+						String[] cmdF = {"bash", "-c", "exit"};
+						cmdProc = Runtime.getRuntime().exec(cmdF);
+						s.close();
+						in.close();
+						out.close();
+						System.exit(0);
+					break;
+					default:
+						System.out.println("Received input other than 1-7");
+						out.println("EndResponse");
+					return;
+				}//end switch
+
+				//output the answer from the bash command to the Client
+				BufferedReader cmdin = new BufferedReader(new InputStreamReader(cmdProc.getInputStream()));
+				while((cmdans = cmdin.readLine()) != null) {
+					out.println(cmdans);
+					System.out.println(cmdans);
+					if (cmdans.equalsIgnoreCase("EndResponse")) {
+						out.println("EndResponse");
+						break;
+					}//end if
+				}//end while
 				System.out.println("======================================================");
-				System.out.println("  Client Quitting...");
-				System.out.println("======================================================");
-				outputToClient.writeChars("Closing socket...");
-			break;
-			default:
-				System.out.println("======================================================");
-				System.out.println("Received input other than 1-7");
-				System.out.println("======================================================");
-			break;
-			}
-		} catch (Exception e) {
+				out.println("EndResponse");
+			}//end while
+		}//end try
+
+		//catch errors
+		catch (IOException e){
 			System.out.println("======================================================");
-			System.out.println("Closing due to error:");
-			e.printStackTrace();
+			System.out.println("  Exception caught " + e);
+			System.out.println(e.getMessage());
 			System.out.println("======================================================");
-			System.exit(-1);
-		}
-	}
-}
+		}// end catch
+		catch (NullPointerException e) {
+			System.out.println("======================================================");
+			System.out.println("  All clients disconnected. Closing Socket...");
+			System.out.println("======================================================");
+		}//end catch
+
+	}//end run()
+
+	//main method
+    public static void main(String[] args) throws IOException {
+		//local vars
+		int portNumber = Integer.parseInt(args[0]);
+
+		//opens the socket to listen for client.
+        try {
+			//keep the socket open
+			while (true) {
+			ServerSocket serverSocket = new ServerSocket(portNumber);
+			System.out.println("======================================================");
+			System.out.println("  Server started. Listening on Port " + portNumber);
+			System.out.println("  Waiting for client request");
+			System.out.println("======================================================");
+			//Keep server open and accept multiple clients
+			while(true){      
+				new Server(serverSocket.accept()).start();
+			}//End while accept
+			}//end while socket
+        }//End try
+        catch (IOException e){
+			System.out.println("======================================================");
+            System.out.println("  Exception caught: " + e);
+			System.out.println("======================================================");
+        }//End Catch
+
+    }//End main
+}//end Server
