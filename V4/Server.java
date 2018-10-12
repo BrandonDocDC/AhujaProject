@@ -116,7 +116,7 @@ public class Server extends Thread {
 		//catch errors
 		catch (IOException e){
 			System.out.println("======================================================");
-			System.out.println("  Exception caught " + e);
+			System.out.println("  Quit command from client. Closing Sockets and quitting.");
 			System.out.println(e.getMessage());
 			System.out.println("======================================================");
 		}// end catch
