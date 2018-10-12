@@ -14,17 +14,25 @@ public class ClientThread extends Thread {
 	public String hostName;
 	public int port;
 	public int menuSelected;
+	public int counter = 0;
+	public static String serverResponse;
+	
+	//clientthread constructor
 	public ClientThread(String host, int portNumber, int menuItem) {
 		hostName = host;
 		port = portNumber;
 		menuSelected = menuItem;
-		int counter = 0;
 	}// end ClientThread constructor
 	
 	public void run() {
-		long timeStart, timeEnd, totalTime, response;
+		long timeStart = 0;
+		long timeEnd;
+		long totalTime = 0;
+		long response = 0;
 		Socket clientSocket;
 		int timeOut = 15000;
+		long start_time = System.currentTimeMillis();
+		timeStart = System.currentTimeMillis();
 		
 		try {
 			clientSocket = new Socket(hostName, port);
@@ -35,47 +43,39 @@ public class ClientThread extends Thread {
 			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 			boolean validInput = false;
 			counter++;
-			
 			switch(menuSelected)
 			{
 				case 1:
-					timeStart = System.currentTimeMillis();
 					System.out.println("Date & Time Request from Client");
 					out.println("1");
 					validInput =true;
 					break;
 		    	case 2:
-					timeStart = System.currentTimeMillis();
 		    		System.out.println("Uptime Request from Client");
 					out.println("2");
 			   		validInput =true;
 			   		break;
 		    	case 3:
-					timeStart = System.currentTimeMillis();
 			   		System.out.println("Memory Use Request from Client");
 			   		out.println("3");
 			   		validInput =true;
 			   		break;
 		    	case 4:
-					timeStart = System.currentTimeMillis();
 			   		System.out.println("NETSTAT Request from Client");
 			   		out.println("4");
 			   		validInput =true;
 			   		break;
 		    	case 5:
-					timeStart = System.currentTimeMillis();
 			   		System.out.println("Current Users Request from Client");
 			   		out.println("5");
 			   		validInput =true;
 			   		break;
 		    	case 6:
-					timeStart = System.currentTimeMillis();
 			   		System.out.println("Processes Request from Client");
 			   		out.println("6");
 			   		validInput =true;
 			   		break;
 		    	case 7:
-					timeStart = System.currentTimeMillis();
 			   		System.out.println("Quit");
 			   		out.println("7");
 			   		System.exit(5);
@@ -91,24 +91,20 @@ public class ClientThread extends Thread {
 			if (validInput)
 	    	{
        			String answer;
-   				while((answer = input.readLine()) != null && !answer.equals("ServerDone"))
+   				while((answer = input.readLine()) != null && !answer.equals("EndResponse"))
    				{
-   					//bw.write(answer);
-   					//bw.newLine();
    					System.out.println(answer);
-   				
    				}// end while answer loop
 	    	}
 			timeEnd = System.currentTimeMillis();
 			response = timeEnd - timeStart;
-			System.out.println("======================================================");
-			clientSocket.close();
-			System.out.println("Thread response time = " + (timeEnd - timeStart) + "ms");
-			System.out.println("======================================================");
 			totalTime += response;
 			System.out.println("======================================================");
+			System.out.println("Thread response time = " + (response) + "ms");
+			System.out.println("Total response time = " + (totalTime) + "ms");
 			System.out.println("Average response time = " + (totalTime / counter) + "ms");
 			System.out.println("======================================================");
+			clientSocket.close();
 			out.close();
 		}// end try
 		catch (Exception e) {
