@@ -12,7 +12,6 @@ import java.util.*;
 public class Client {
 	//global vars
 	public static String serverResponse;
-	public static String stopVar = "Stop";
     public static int times, option;
 	public static long end_time;
 
@@ -20,15 +19,6 @@ public class Client {
 	//local vars
     String hostName = args[0];
     int portNumber = Integer.parseInt(args[1]);
-
-		//if the user executes the java without params (args)
-        //if (args.length != 2){
-		//	System.out.println("======================================================");
-		//	System.err.println("You need server and port: java Client <host name> <port number>");
-		//	System.err.println("  --             Example: java Client 192.168.100.107 8012");
-		//	System.out.println("======================================================");
-        //    System.exit(1);
-        //}//end if
 
 		//When successful, it will establish a socket
         try{         
