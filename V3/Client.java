@@ -1,7 +1,7 @@
 /** Project 1 - Networks and Distributed Systems
   * Dr. Ahuja
   * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
-  * Client.java
+  * MultiClient.java
 */
 
 import java.io.*;
@@ -23,8 +23,8 @@ public class Client {
 		//if the user executes the java without params (args)
         //if (args.length != 2){
 		//	System.out.println("======================================================");
-		//	System.err.println("You need the server and port: java Client <host name> <port number>");
-		//	System.err.println("  --                 Example: java Client 192.168.100.107 8012");
+		//	System.err.println("You need server and port: java Client <host name> <port number>");
+		//	System.err.println("  --             Example: java Client 192.168.100.107 8012");
 		//	System.out.println("======================================================");
         //    System.exit(1);
         //}//end if
@@ -52,7 +52,7 @@ public class Client {
 				//else {
 				//	System.out.println("======================================================");
 				//	System.err.println("You need to enter the correct port number!");
-				//	System.err.println("  --                 Example: java Client <IP> <port>");
+				//	System.err.println("          Example: java Client <IP> <port>");
 				//	System.out.println("======================================================");
 				//	System.exit(1);
 				//}
@@ -63,16 +63,18 @@ public class Client {
 					long start_time; 
 					 //log print line, broken up to show output (menu)
 					System.out.println( "1) Host Current Date and Time\n"
-									  + "2) Host Current Uptime\n"
-									  + "3) Host Current Memory Use\n"
-									  + "4) Host Current Netstat\n"
+									  + "2) Host Uptime\n"
+									  + "3) Host Memory Use\n"
+									  + "4) Host Netstat\n"
 									  + "5) Host Current Users\n"
 									  + "6) Host Running Processes\n"
 									  + "7) Quit\n" );
 									  
 					System.out.println("Select your option: ");
 					option = stdIn.read();
+					System.out.println("======================================================");
 					
+					//start switch for menu
 					switch (option) {
 						//Host Current Date & Time
 						case '1':
@@ -168,16 +170,18 @@ public class Client {
 							System.out.println("======================================================");
 							System.out.println("");
 							continue;
-					}//End switch 
+					}//End switch
 					
+					System.out.println("======================================================");
+					//prints out response from server.
 					while ((serverResponse = in.readLine()) != null && !serverResponse.equalsIgnoreCase("EndResponse")) {
+						System.out.println("======================================================");
 						out.println(serverResponse);
 					}
 					//end the time per command
 					end_time = System.currentTimeMillis();
-				System.out.println("======================================================");
 				//Print length of time and status of option
-				System.out.println("  --  Completed in " + (end_time-start_time) + "ms");
+				System.out.println("Completed in " + (end_time-start_time) + "ms");
 				System.out.println("======================================================");
 				System.out.println("");
 				//}//end while2
