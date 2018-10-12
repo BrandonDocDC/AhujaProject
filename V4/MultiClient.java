@@ -35,6 +35,7 @@ public class MultiClient {
 		while(true) {
 			menu();
 			if (menuSelected == 7) {
+				Thread[] theThreads= new Thread[1];
 				theThreads[0].join();
 			}
 			else {
