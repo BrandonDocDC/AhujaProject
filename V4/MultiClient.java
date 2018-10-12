@@ -15,6 +15,7 @@ public class MultiClient {
 	static int portNumber;
 	static int menuSelected;
 	static int counter = 0;
+	static long timerStart;
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
 		// check the args to ensure the correct number of args are given
@@ -33,20 +34,27 @@ public class MultiClient {
 		}// end catch (NumberFormatException)
 		while(true) {
 		menu();
-		int numberOfTimes = 0;
-		while (numberOfTimes < 1 || numberOfTimes > 7) {
+		if (menuSelected == 7) {
+			theThreads[0].join();
+		}
+		else {
 			System.out.println("How many threads would you like:");
 			Scanner keyboard = new Scanner(System.in);
-			numberOfTimes = keyboard.nextInt();
+			int numberOfTimes = keyboard.nextInt();
+			if (numberOfTimes > 75 || numberOfTimes < 1 ) {
+				System.out.println("Please enter a number  1 - 75");
+				keyboard.next();
+			}
+			timerStart = System.currentTimeMillis();
+			Thread[] theThreads = new Thread[numberOfTimes];
+			runThreads(numberOfTimes, theThreads);
+			//create an array of threads and join them
+			for(int index = 0; index < numberOfTimes; index++) 
+				theThreads[index].join();
 		}
-		long timerStart = System.currentTimeMillis();
-		counter++;
-		Thread[] theThreads = new Thread[numberOfTimes];
-		runThreads(numberOfTimes, theThreads);
-		//create an array of threads and join them
-		for(int index = 0; index < numberOfTimes; index++) 
-			theThreads[index].join();
-		}
+	}// end main method 
+	
+	public static void menu() {
 		if (counter > 0) {
 			long timerStop = System.currentTimeMillis();
 			long totalTime = timerStop - timerStart;
@@ -54,9 +62,6 @@ public class MultiClient {
 			System.out.println("Total time for all responses: " + totalTime + "ms");
 			System.out.println("======================================================");
 		}
-	}// end main method 
-	
-	public static void menu() {
 		System.out.println( "1) Host Current Date and Time\n"
 						  + "2) Host Uptime\n"
 						  + "3) Host Memory Use\n"
@@ -66,12 +71,12 @@ public class MultiClient {
 						  + "7) Quit\n" );
 		System.out.println("Select your option: ");
 		Scanner sc = new Scanner(System.in);
-		while(!sc.hasNextInt())
-		{
-			System.out.println("User invalid input, input number between 1 or 7");
-		        sc.next();
-		}// end while !sc.hasNextInt loop
 		menuSelected = sc.nextInt();
+		if (menuSelected > 7 || menuSelected < 1) {
+			System.out.println("User invalid input, input number 1 - 7");
+			sc.next();
+		}
+		counter++;
 		System.out.println("======================================================");
 	}// end menu method
 	
