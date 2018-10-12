@@ -22,8 +22,7 @@ public class ClientThread extends Thread {
 	}// end ClientThread constructor
 	
 	public void run() {
-		long timeStart;
-		long timeEnd;
+		long timeStart, timeEnd, totalTime, response;
 		Socket clientSocket;
 		int timeOut = 15000;
 		
@@ -101,12 +100,12 @@ public class ClientThread extends Thread {
    				}// end while answer loop
 	    	}
 			timeEnd = System.currentTimeMillis();
-			long response = timeEnd - timeStart;
+			response = timeEnd - timeStart;
 			System.out.println("======================================================");
 			clientSocket.close();
 			System.out.println("Thread response time = " + (timeEnd - timeStart) + "ms");
 			System.out.println("======================================================");
-			long totalTime += response;
+			totalTime += response;
 			System.out.println("======================================================");
 			System.out.println("Average response time = " + (totalTime / counter) + "ms");
 			System.out.println("======================================================");
