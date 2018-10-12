@@ -66,7 +66,7 @@ public class MultiClient {
 	public static void runThreads(int times, Thread[] theThreads) {
 		System.out.println("Client Threading: " + times + " times.");
 		for(int index1 = 0; index1 < theThreads.length; index1++) {
-			theThreads[index1] = new ClientOptions(hostName, portNumber, menuSelected);
+			theThreads[index1] = new ClientThread(hostName, portNumber, menuSelected);
 		}
 		for(int index = 0; index < theThreads.length; index++) {
 			System.out.println("======================================================");
