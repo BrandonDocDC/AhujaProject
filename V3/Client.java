@@ -41,21 +41,6 @@ public class Client {
 				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // in is the input from server response
 				BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); //user menu input
 				Scanner s = new Scanner(System.in); // s var to loop executions
-				
-				//check that actually connected to server
-				//Thread.sleep(1000);
-				//if ((serverResponse = in.readLine()) != null && !serverResponse.equalsIgnoreCase("Success")) {
-				//	System.out.println("======================================================");
-				//	System.err.println("Successfully connected to " + hostName + " over port " + portNumber);
-				//	System.out.println("======================================================");
-				//}
-				//else {
-				//	System.out.println("======================================================");
-				//	System.err.println("You need to enter the correct port number!");
-				//	System.err.println("          Example: java Client <IP> <port>");
-				//	System.out.println("======================================================");
-				//	System.exit(1);
-				//}
 
 				//while the socket is live, it will keep posting the menu
 				//while2
