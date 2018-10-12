@@ -14,6 +14,7 @@ public class MultiClient {
 	static String hostName;
 	static int portNumber;
 	static int menuSelected;
+	static int counter = 0;
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
 		// check the args to ensure the correct number of args are given
@@ -32,9 +33,21 @@ public class MultiClient {
 		}// end catch (NumberFormatException)
 		while(true) {
 		menu();
-		System.out.println("How many threads would you like:");
-		Scanner keyboard = new Scanner(System.in);
-		int numberOfTimes = keyboard.nextInt();
+		int numberOfTimes = 0;
+		while (numberOfTimes < 1 || numberOfTimes > 7) {
+			System.out.println("How many threads would you like:");
+			Scanner keyboard = new Scanner(System.in);
+			numberOfTimes = keyboard.nextInt();
+		}
+		long timerStart = System.currentTimeMillis();
+		if (counter > 0) {
+			long timerStop = System.currentTimeMillis();
+			long totalTime = timerStop - timerStart;
+			System.out.println("======================================================");
+			System.out.println("Total time for all responses: " + totalTime + "ms");
+			System.out.println("======================================================");
+		}
+		counter++;
 		Thread[] theThreads = new Thread[numberOfTimes];
 		runThreads(numberOfTimes, theThreads);
 		//create an array of threads and join them
