@@ -19,7 +19,7 @@ import java.util.*;
  *  (Client: receives it, processes the array)(ends time)
  */
 
-public class ClientOptions extends Thread {
+public class ClientThreaded extends Thread {
 	//Global Vars
 	public String hostName;
 	public int port;
@@ -28,7 +28,7 @@ public class ClientOptions extends Thread {
 		hostName = host;
 		port = portNumber;
 		option = menuItem;
-	}// end ClientOptions constructor
+	}// end ClientThreaded constructor
 	
 	public void run() {
 		//Vars
