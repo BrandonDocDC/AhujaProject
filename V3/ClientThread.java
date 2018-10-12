@@ -50,6 +50,7 @@ public class ClientThreaded extends Thread {
 		Scanner keyboard = new Scanner(System.in);
 		int numberOfTimes = keyboard.nextInt();
 		Thread[] theThreads = new Thread[numberOfTimes];
+		//runThreads(numberOfTimes, theThreads, hostName, portNumber);
 		runThreads(numberOfTimes, theThreads);
 		for(int index = 0; index < numberOfTimes; index++) 
 			theThreads[index].join();
@@ -78,10 +79,11 @@ public class ClientThreaded extends Thread {
 	}// end menu method
 	
 	//runThreads mathod
+	//public static void runThreads(int times, Thread[] theThreads, string hostName, int portNumber) {
 	public static void runThreads(int times, Thread[] theThreads) {
 		System.out.println("Client threaded " + times + " times.");
 		for(int index1 = 0; index1 < theThreads.length; index1++) {
-			theThreads[index1] = new ClientOptions(hostName, portNumber, menuSelected);
+			theThreads[index1] = new ClientThreaded(hostName, portNumber, menuSelected);
 		}
 		for(int index = 0; index < theThreads.length; index++) {
 			
@@ -89,7 +91,7 @@ public class ClientThreaded extends Thread {
 			theThreads[index].run();
 		}// end runThreads method
 	}// end runThreads method
-	
+
 	//ClientThreaded Method
 	public ClientThreaded(String host, int portNumber, int menuItem) {
 		hostName = host;
