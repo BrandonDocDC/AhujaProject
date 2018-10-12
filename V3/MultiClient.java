@@ -1,3 +1,5 @@
+package multiclient;
+
 /** Project 1 - Networks and Distributed Systems
   * Dr. Ahuja
   * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
@@ -81,7 +83,7 @@ public class MultiClient {
 	public static void runThreads(int times, Thread[] theThreads) {
 		System.out.println("Client threaded " + times + " times.");
 		for(int index1 = 0; index1 < theThreads.length; index1++) {
-			theThreads[index1] = new MultiClient(hostName, portNumber, menuSelected);
+			theThreads[index1] = new ClientThreaded(hostName, portNumber, menuSelected);
 		}
 		for(int index = 0; index < theThreads.length; index++) {
 			
@@ -90,10 +92,10 @@ public class MultiClient {
 		}// end runThreads method
 	}// end runThreads method
 
-	//MultiClient Method
-	public MultiClient(String host, int portNumber, int menuItem) {
+	//ClientThreaded Method
+	public ClientThreaded(String host, int portNumber, int menuItem) {
 		hostName = host;
 		port = portNumber;
 		option = menuItem;
-	}// end MultiClient constructor
+	}// end ClientThreaded constructor
 }// end MultiClient class
