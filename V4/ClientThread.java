@@ -82,7 +82,7 @@ public class ClientThread extends Thread {
 			   		break;
 		    	default:
 					System.out.println("======================================================");
-			   		System.out.println("ERROR! Invalid input... Please type a number between 1 and 7.");
+			   		System.out.println("ERROR! Invalid input... Please type a number 1 - 7.");
 					System.out.println("======================================================");
 					System.out.println("");
 			   		validInput =false;
