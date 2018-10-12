@@ -16,17 +16,18 @@ import java.util.*;
  *  then the client will process the times for each one.
  *
  *  (starts time) (Client: builds the array, sends it) (Server: receives the array, processes it, sends array back
-*/  (Client: receives it, processes the array)(ends time)
+ *  (Client: receives it, processes the array)(ends time)
+ */
 
 public class ClientOptions extends Thread {
 	//Global Vars
 	public String hostName;
 	public int port;
-	public int menuSelected;
+	public int option;
 	public ClientOptions(String host, int portNumber, int menuItem) {
 		hostName = host;
 		port = portNumber;
-		menuSelected = menuItem;
+		option = menuItem;
 	}// end ClientOptions constructor
 	
 	public void run() {
@@ -49,7 +50,7 @@ public class ClientOptions extends Thread {
 			boolean validInput = false;
 			
 			//
-			switch(menuSelected)
+			switch(option)
 			{
 				case 1:
 					System.out.println("Date Request from Client");
@@ -93,11 +94,11 @@ public class ClientOptions extends Thread {
 			}//end switch
 			if (validInput)
 	    	{
-       			String answer;
-   				while((answer = input.readLine()) != null && !answer.equals("ServerDone"))
+       			String serverResponse;
+   				while((serverResponse = input.readLine()) != null && !serverResponse.equals("EndResponse"))
    				{
 					// Get answer from server and print.
-					System.out.println(answer);
+					System.out.println(serverResponse);
    				
    				}// end while answer loop
 	    	}
