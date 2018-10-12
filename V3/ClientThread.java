@@ -46,7 +46,7 @@ public class ClientThreaded extends Thread {
 		}// end catch (NumberFormatException)
 		while(true) {
 		menu();
-		System.out.println(How many threads:");
+		System.out.println("How many threads:");
 		Scanner keyboard = new Scanner(System.in);
 		int numberOfTimes = keyboard.nextInt();
 		Thread[] theThreads = new Thread[numberOfTimes];
@@ -85,7 +85,7 @@ public class ClientThreaded extends Thread {
 		}
 		for(int index = 0; index < theThreads.length; index++) {
 			
-			System.out.println("Thread # " + (index + 1));
+			System.out.println("Thread_" + (index + 1));
 			theThreads[index].run();
 		}// end runThreads method
 	}// end runThreads method
@@ -106,8 +106,8 @@ public class ClientThreaded extends Thread {
 		int timeOut = 15000;
 		
 		try {
-			//start timers
-			timeStart = System.currentTimeMillis();
+			//start timer before request sent to server
+			start_time = System.currentTimeMillis();
 			//open sockets
 			clientSocket = new Socket(hostName, port);
 			clientSocket.setSoTimeout(timeOut);
@@ -163,16 +163,16 @@ public class ClientThreaded extends Thread {
 					//System.out.println("Running Processes: " + in.readLine());
 				//	new
 					// Start Time
-					start_time = System.currentTimeMillis();
+					long startTime = System.currentTimeMillis();
 					out.println("6");
 					System.out.println("Running Processes: " + in.readLine());
 					while ((serverResponse = in.readLine()) != null && !serverResponse.equals("EndResponse")) {
 						System.out.println(serverResponse);
 					}
-					end_time = System.currentTimeMillis();
+					long endTime = System.currentTimeMillis();
 					System.out.println("======================================================");
 				//	Print length of time and status of option
-					System.out.println("  --  Completed in " + (end_time-start_time) + "ms");
+					System.out.println("  --  Completed in " + (endTime-startTime) + "ms");
 					System.out.println("======================================================");
 					System.out.println("");
 			   		validInput =true;
@@ -186,7 +186,10 @@ public class ClientThreaded extends Thread {
 			   		System.exit(5);
 			   	break;
 		    	default:
+					System.out.println("======================================================");
 			   		System.out.println("ERROR! Invalid input... Please type a number between 1 and 7.");
+					System.out.println("======================================================");
+					System.out.println("");
 			   		validInput =false;
 			   	break;
 			}//end switch
@@ -200,18 +203,20 @@ public class ClientThreaded extends Thread {
 					System.out.println(serverResponse);
    				}// end while answer loop
 	    	}
-			//end timer after response from server
-			timeEnd = System.currentTimeMillis();
 			clientSocket.close();
-			//close socket and display the time for the request.
+			//end the time after response is received from server
+			end_time = System.currentTimeMillis();
+			//Print length of time and status of option
+			System.out.println("Completed in " + (end_time-start_time) + "ms");
 			System.out.println("======================================================");
-			System.out.println("Response time = " + (timeEnd - timeStart));
-			System.out.println("======================================================");
+			System.out.println("");
 			out.close();
 		}// end try
 		catch (Exception e) {
+			System.out.println("======================================================");
 			System.out.println("Cannot open socket at " + hostName + ":" + port);
 			e.printStackTrace();
+			System.out.println("======================================================");
 			System.exit(-1);
 		}
 	}// end run method
