@@ -65,6 +65,7 @@ public class ClientThreaded extends Thread {
 						  + "5) Host Current Users\n"
 						  + "6) Host Running Processes\n"
 						  + "7) Quit\n" );
+		System.out.println("Select your option: ");
 		Scanner sc = new Scanner(System.in);
 		while(!sc.hasNextInt())
 		{
@@ -72,12 +73,13 @@ public class ClientThreaded extends Thread {
 		        sc.next();
 		}// end while !sc.hasNextInt loop
 		menuSelected = sc.nextInt();
+		System.out.println("======================================================");
 		
 	}// end menu method
 	
 	//runThreads mathod
 	public static void runThreads(int times, Thread[] theThreads) {
-		System.out.println("Concurrent Client # " + times);
+		System.out.println("Client threaded " + times + " times.");
 		for(int index1 = 0; index1 < theThreads.length; index1++) {
 			theThreads[index1] = new ClientOptions(hostName, portNumber, menuSelected);
 		}
