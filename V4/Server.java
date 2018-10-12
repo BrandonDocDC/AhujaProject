@@ -83,6 +83,7 @@ public class Server extends Thread {
 					case "7":
 						System.out.println("======================================================");
 						System.out.println("  Client Quitting...");
+						System.out.println("  All clients disconnected. Closing Socket...");
 						System.out.println("======================================================");
 						String[] cmdF = {"bash", "-c", "exit"};
 						cmdProc = Runtime.getRuntime().exec(cmdF);
@@ -92,7 +93,7 @@ public class Server extends Thread {
 						System.exit(0);
 					break;
 					default:
-						System.out.println("Received input other than 1-7");
+						System.out.println("Received input other than 1 - 7.");
 						out.println("EndResponse");
 					return;
 				}//end switch
