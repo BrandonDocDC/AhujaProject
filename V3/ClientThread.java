@@ -1,7 +1,25 @@
+/** Project 1 - Networks and Distributed Systems
+  * Dr. Ahuja
+  * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
+  * ClientThreaded.java
+*/
+
+//Imports
 import java.io.*;
 import java.net.*;
 import java.util.*;
+
+/** This is the threaded Load Test Client. You will select the number for the request &
+ *  how many threads you would like. The client will create the threads, connect the
+ *  threads and send the request. Then server will respond to the requests (unthreaded 
+ *  will respond iteratively, project 2 concurrently). It will send the response back
+ *  then the client will process the times for each one.
+ *
+ *  (starts time) (Client: builds the array, sends it) (Server: receives the array, processes it, sends array back
+*/  (Client: receives it, processes the array)(ends time)
+
 public class ClientOptions extends Thread {
+	//Global Vars
 	public String hostName;
 	public int port;
 	public int menuSelected;
@@ -12,13 +30,16 @@ public class ClientOptions extends Thread {
 	}// end ClientOptions constructor
 	
 	public void run() {
+		//Vars
 		double timeStart;
 		double timeEnd;
 		Socket clientSocket;
 		int timeOut = 15000;
 		
 		try {
+			//start timers
 			timeStart = System.currentTimeMillis();
+			//open sockets
 			clientSocket = new Socket(hostName, port);
 			clientSocket.setSoTimeout(timeOut);
 			// Output from server
@@ -27,42 +48,42 @@ public class ClientOptions extends Thread {
 			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 			boolean validInput = false;
 			
-			
+			//
 			switch(menuSelected)
 			{
 				case 1:
 					System.out.println("Date Request from Client");
-					out.println("Request 1");
+					out.println("1");
 					validInput =true;
 					break;
 		    	case 2:
 		    		System.out.println("Uptime Request from Client");
-					out.println("Request 2");
+					out.println("2");
 			   		validInput =true;
 			   		break;
 		    	case 3:
 			   		System.out.println("Memory Use Request from Client");
-			   		out.println("Request 3");
+			   		out.println("3");
 			   		validInput =true;
 			   		break;
 		    	case 4:
 			   		System.out.println("IPV4 Socket Connections Request from Client");
-			   		out.println("Request 4");
+			   		out.println("4");
 			   		validInput =true;
 			   		break;
 		    	case 5:
 			   		System.out.println("Current Users Request from Client");
-			   		out.println("Request 5");
+			   		out.println("5");
 			   		validInput =true;
 			   		break;
 		    	case 6:
 			   		System.out.println("Current OS Version Request from Client");
-			   		out.println("Request 6");
+			   		out.println("6");
 			   		validInput =true;
 			   		break;
 		    	case 7:
 			   		System.out.println("Quit");
-			   		out.println("Request 7");
+			   		out.println("7");
 			   		System.exit(5);
 			   		break;
 		    	default:
@@ -75,14 +96,15 @@ public class ClientOptions extends Thread {
        			String answer;
    				while((answer = input.readLine()) != null && !answer.equals("ServerDone"))
    				{
-   					//bw.write(answer);
-   					//bw.newLine();
-   					System.out.println(answer);
+					// Get answer from server and print.
+					System.out.println(answer);
    				
    				}// end while answer loop
 	    	}
+			//end timer after response from server
 			timeEnd = System.currentTimeMillis();
 			clientSocket.close();
+			//close socket and display the time for the request.
 			System.out.println("Response time = " + (timeEnd - timeStart));
 			out.close();
 		}// end try
