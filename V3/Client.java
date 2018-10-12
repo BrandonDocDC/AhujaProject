@@ -31,7 +31,6 @@ public class Client {
 				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true); // doorstop to keep listening on socket
 				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // in is the input from server response
 				BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); //user menu input
-				Scanner s = new Scanner(System.in); // s var to loop executions
 
 				//while the socket is live, it will keep posting the menu
 				//while2
@@ -134,7 +133,6 @@ public class Client {
 							System.out.println("======================================================");
 							System.out.println("");
 							//close socket & kill process
-							s.close();
 							in.close();
 							out.close();
 							System.exit(1);
