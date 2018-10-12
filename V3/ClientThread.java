@@ -18,17 +18,84 @@ import java.util.*;
  *  (starts time) (Client: builds the array, sends it) (Server: receives the array, processes it, sends array back
  *  (Client: receives it, processes the array)(ends time)
  */
-
+ 
+// client threaded class: main method will call all methods to:
+// create the socket, create the threads, and connect the threads. everything else is in run()
 public class ClientThreaded extends Thread {
 	//Global Vars
+	static int portNumber;
+	static int menuSelected;
 	public String hostName;
 	public int port, option;
+	
+	//main method
+	public static void main(String[] args) throws IOException, InterruptedException {
+		// check the args to ensure the correct number of args are given
+		if(args.length < 2) {
+			System.out.println("Please enter arguments in this format java ClientThreaded <server IP Address> <port number>\n");
+			System.exit(0);
+		}// end if args.length < 2 check
+		hostName = args[0];
+		
+		try {
+			portNumber = Integer.parseInt(args[1]);
+		}// end try
+		catch (NumberFormatException e) {
+			System.out.println("User invalid input, please enter a port number as an Integer.");
+			System.exit(-1);
+		}// end catch (NumberFormatException)
+		while(true) {
+		menu();
+		System.out.println(How many threads:");
+		Scanner keyboard = new Scanner(System.in);
+		int numberOfTimes = keyboard.nextInt();
+		Thread[] theThreads = new Thread[numberOfTimes];
+		runThreads(numberOfTimes, theThreads);
+		for(int index = 0; index < numberOfTimes; index++) 
+			theThreads[index].join();
+		}
+	}// end main method 
+	
+	//menu method
+	public static void menu() {
+		System.out.println( "1) Host Current Date and Time\n"
+						  + "2) Host Uptime\n"
+						  + "3) Host Memory Use\n"
+						  + "4) Host Netstat\n"
+						  + "5) Host Current Users\n"
+						  + "6) Host Running Processes\n"
+						  + "7) Quit\n" );
+		Scanner sc = new Scanner(System.in);
+		while(!sc.hasNextInt())
+		{
+			System.out.println("User invalid input, input number between 1 or 7");
+		        sc.next();
+		}// end while !sc.hasNextInt loop
+		menuSelected = sc.nextInt();
+		
+	}// end menu method
+	
+	//runThreads mathod
+	public static void runThreads(int times, Thread[] theThreads) {
+		System.out.println("Concurrent Client # " + times);
+		for(int index1 = 0; index1 < theThreads.length; index1++) {
+			theThreads[index1] = new ClientOptions(hostName, portNumber, menuSelected);
+		}
+		for(int index = 0; index < theThreads.length; index++) {
+			
+			System.out.println("Thread # " + (index + 1));
+			theThreads[index].run();
+		}// end runThreads method
+	}// end runThreads method
+	
+	//ClientThreaded Method
 	public ClientThreaded(String host, int portNumber, int menuItem) {
 		hostName = host;
 		port = portNumber;
 		option = menuItem;
 	}// end ClientThreaded constructor
 	
+	//run method *all actions that were called from the main method are located here.
 	public void run() {
 		//Vars
 		double timeStart;
@@ -52,44 +119,74 @@ public class ClientThreaded extends Thread {
 			switch(option)
 			{
 				case 1:
-					System.out.println("Date Request from Client");
+					System.out.println("Current Date & Time Request from Client");
 					out.println("1");
+					//System.out.println("Current Date & Time: " + in.readLine());
 					validInput =true;
-					break;
+				break;
 		    	case 2:
 		    		System.out.println("Uptime Request from Client");
 					out.println("2");
+					//System.out.println("Uptime: " + in.readLine());
 			   		validInput =true;
-			   		break;
+			   	break;
 		    	case 3:
 			   		System.out.println("Memory Use Request from Client");
 			   		out.println("3");
+					//System.out.println("Memory Use: " + in.readLine());
+					//while ((serverResponse = in.readLine()) != null && !serverResponse.equals("EndResponse")) {
+					//	System.out.println(serverResponse);
+					//}
 			   		validInput =true;
-			   		break;
+			   	break;
 		    	case 4:
-			   		System.out.println("IPV4 Socket Connections Request from Client");
+			   		System.out.println("Netstat Request from Client");
 			   		out.println("4");
+					//System.out.println("Netstat: " + in.readLine());
+					//while ((serverResponse = in.readLine()) != null && !serverResponse.equals("EndResponse")) {
+					//	System.out.println(serverResponse);
+					//}
 			   		validInput =true;
-			   		break;
+			   	break;
 		    	case 5:
 			   		System.out.println("Current Users Request from Client");
 			   		out.println("5");
+					//System.out.println("Current Users: " + in.readLine());
 			   		validInput =true;
-			   		break;
+			   	break;
 		    	case 6:
-			   		System.out.println("Current OS Version Request from Client");
-			   		out.println("6");
+				//	original
+			   		//System.out.println("Running Processes Request from Client");
+			   		//out.println("6");
+					//System.out.println("Running Processes: " + in.readLine());
+				//	new
+					// Start Time
+					start_time = System.currentTimeMillis();
+					out.println("6");
+					System.out.println("Running Processes: " + in.readLine());
+					while ((serverResponse = in.readLine()) != null && !serverResponse.equals("EndResponse")) {
+						System.out.println(serverResponse);
+					}
+					end_time = System.currentTimeMillis();
+					System.out.println("======================================================");
+				//	Print length of time and status of option
+					System.out.println("  --  Completed in " + (end_time-start_time) + "ms");
+					System.out.println("======================================================");
+					System.out.println("");
 			   		validInput =true;
-			   		break;
+			   	break;
 		    	case 7:
-			   		System.out.println("Quit");
+					System.out.println("======================================================");
+					System.out.println("Quiting...");
+					System.out.println("======================================================");
+					System.out.println("");
 			   		out.println("7");
 			   		System.exit(5);
-			   		break;
+			   	break;
 		    	default:
-			   		System.out.println("Invalid Input");
+			   		System.out.println("ERROR! Invalid input... Please type a number between 1 and 7.");
 			   		validInput =false;
-			   		break;
+			   	break;
 			}//end switch
 			if (validInput)
 	    	{
@@ -97,19 +194,21 @@ public class ClientThreaded extends Thread {
    				while((serverResponse = input.readLine()) != null && !serverResponse.equals("EndResponse"))
    				{
 					// Get answer from server and print.
+					System.out.println("======================================================");
 					System.out.println(serverResponse);
-   				
    				}// end while answer loop
 	    	}
 			//end timer after response from server
 			timeEnd = System.currentTimeMillis();
 			clientSocket.close();
 			//close socket and display the time for the request.
+			System.out.println("======================================================");
 			System.out.println("Response time = " + (timeEnd - timeStart));
+			System.out.println("======================================================");
 			out.close();
 		}// end try
 		catch (Exception e) {
-			System.out.println("Can not open socket at " + hostName + ":" + port);
+			System.out.println("Cannot open socket at " + hostName + ":" + port);
 			e.printStackTrace();
 			System.exit(-1);
 		}
