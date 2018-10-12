@@ -23,8 +23,8 @@ import java.util.*;
 // create the socket, create the threads, and connect the threads. everything else is in run()
 public class ClientThreaded extends Thread {
 	//Global Vars
-	static int portNumber;
-	static int menuSelected;
+	public int portNumber;
+	public int menuSelected;
 	public String hostName;
 	public int port, option;
 	
