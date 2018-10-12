@@ -150,7 +150,7 @@ public class ClientThreaded extends Thread {
 		}// end try
 		catch (Exception e) {
 			System.out.println("======================================================");
-			System.out.println("Cannot open socket at " + hostName + ":" + port);
+			System.out.println("Cannot connect to " + hostName + ":" + port);
 			e.printStackTrace();
 			System.out.println("======================================================");
 			System.exit(-1);
