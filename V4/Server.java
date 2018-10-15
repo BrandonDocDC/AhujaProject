@@ -59,8 +59,8 @@ public class Server extends Thread {
 					case "3":
 						System.out.println("======================================================");
 						System.out.println("  Responding to number of active socket connections request from the client");
-						String[] cmdB = {"bash", "-c", "free -h"}; // returns formatted bytes
-						//String[] cmdB = {"bash", "-c", "free"}; // returns in killabytes
+						//String[] cmdB = {"bash", "-c", "free -h"}; // returns formatted bytes
+						String[] cmdB = {"bash", "-c", "free"}; // returns in killabytes
 						cmdProc = Runtime.getRuntime().exec(cmdB);
 					break;
 					case "4":
@@ -117,7 +117,6 @@ public class Server extends Thread {
 		catch (IOException e){
 			System.out.println("======================================================");
 			System.out.println("  Quit command from client. Closing Sockets and quitting.");
-			System.out.println(e.getMessage());
 			System.out.println("======================================================");
 		}// end catch
 		catch (NullPointerException e) {
@@ -150,7 +149,7 @@ public class Server extends Thread {
         }//End try
         catch (IOException e){
 			System.out.println("======================================================");
-            System.out.println("  Quit command from client. Closing Sockets and quitting.");
+            		System.out.println("  Quit command from client. Closing Sockets and quitting.");
 			System.out.println("======================================================");
         }//End Catch
 
