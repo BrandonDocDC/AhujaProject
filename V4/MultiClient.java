@@ -34,11 +34,11 @@ public class MultiClient {
 		}// end catch (NumberFormatException)
 		while(true) {
 			menu();
-			if (menuSelected == 7) {
-				Thread[] theThreads= new Thread[1];
-				theThreads[0].join();
-			}
-			else {
+			//if (menuSelected == 7) {
+			//	Thread[] theThreads= new Thread[1];
+			//	theThreads[0].join();
+			//}
+			//else {
 				System.out.println("How many threads would you like:");
 				Scanner keyboard = new Scanner(System.in);
 				int numberOfTimes = keyboard.nextInt();
@@ -52,7 +52,7 @@ public class MultiClient {
 				//create an array of threads and join them
 				for(int index = 0; index < numberOfTimes; index++) 
 					theThreads[index].join();
-			}//end else
+			//}//end else
 		}//end while
 	}// end main method 
 	
