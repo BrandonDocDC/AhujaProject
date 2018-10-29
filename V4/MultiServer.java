@@ -1,19 +1,19 @@
 /** Project 1 - Networks and Distributed Systems
  * Dr. Ahuja
  * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
- * Server.java
+ * MultiServer.java
 */
 
 //Imports
 import java.io.*;
 import java.net.*;
 
-public class Server extends Thread {
+public class MultiServer extends Thread {
 	//Global Vars
 	Socket s = null;
     
 	//Thread Method
-    public Server(Socket clientSocket){
+    public MultiServer(Socket clientSocket){
         this.s = clientSocket;
     } //end constructor
 
@@ -138,12 +138,12 @@ public class Server extends Thread {
 			while (true) {
 			ServerSocket serverSocket = new ServerSocket(portNumber);
 			System.out.println("======================================================");
-			System.out.println("  Server started. Listening on Port " + portNumber);
+			System.out.println("  MultiServer started. Listening on Port " + portNumber);
 			System.out.println("  Waiting for client request");
 			System.out.println("======================================================");
-			//Keep server open and accept multiple clients
+			//Keep MultiServer open and accept multiple clients
 			while(true){      
-				new Server(serverSocket.accept()).start();
+				new MultiServer(serverSocket.accept()).start();
 			}//End while accept
 			}//end while socket
         }//End try
@@ -154,4 +154,4 @@ public class Server extends Thread {
         }//End Catch
 
     }//End main
-}//end Server
+}//end MultiServer
