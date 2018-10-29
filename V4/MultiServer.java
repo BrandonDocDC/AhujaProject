@@ -1,4 +1,4 @@
-/** Project 1 - Networks and Distributed Systems
+/** Project 2 - Networks and Distributed Systems
  * Dr. Ahuja
  * Brandon DeCrescenzo, Kristoffer Binek, Nahjani Rhymer
  * MultiServer.java
